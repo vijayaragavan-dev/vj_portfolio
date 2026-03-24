@@ -100,18 +100,24 @@ export default function About() {
           >
             <motion.p
               variants={itemVariants}
-              className="text-lg text-[var(--text-secondary)] leading-relaxed"
+              className="text-lg text-[var(--text-secondary)] leading-relaxed glass rounded-xl p-6"
             >
-              I&apos;m a passionate Java Full Stack Developer with strong expertise in building enterprise-grade applications. 
-              My focus is on writing clean, efficient code and creating scalable systems using Java, Spring Boot, and modern technologies.
+              <span className="text-[var(--primary)] font-semibold">Passionate Java Full Stack Developer</span> specializing in building 
+              <span className="text-[var(--primary)] font-semibold"> scalable backend systems</span> and 
+              <span className="text-[var(--primary)] font-semibold"> modern web applications</span>. 
+              Strong foundation in <span className="text-[var(--secondary)] font-semibold">Data Structures</span>, 
+              <span className="text-[var(--secondary)] font-semibold"> Algorithms</span>, and 
+              <span className="text-[var(--secondary)] font-semibold"> RESTful API development</span>.
             </motion.p>
 
             <motion.p
               variants={itemVariants}
-              className="text-lg text-[var(--text-secondary)] leading-relaxed"
+              className="text-lg text-[var(--text-secondary)] leading-relaxed glass rounded-xl p-6"
             >
-              With a solid foundation in Data Structures and Algorithms, I strive to write optimized solutions. 
-              I&apos;m constantly learning and staying updated with the latest technologies to deliver best-in-class solutions.
+              Experienced with <span className="text-[var(--primary)] font-semibold">Spring Boot</span>, 
+              <span className="text-[var(--primary)] font-semibold"> MySQL</span>, and 
+              <span className="text-[var(--primary)] font-semibold"> frontend technologies</span>, 
+              with a <span className="text-[var(--secondary)] font-semibold">continuous drive to learn and innovate</span>.
             </motion.p>
 
             <div className="grid grid-cols-2 gap-4">
@@ -119,7 +125,8 @@ export default function About() {
                 <motion.div
                   key={detail.label}
                   variants={itemVariants}
-                  className="glass rounded-lg p-4 hover:shadow-lg hover:shadow-[var(--primary)]/10 transition-shadow duration-300"
+                  whileHover={{ scale: 1.02, y: -4 }}
+                  className="glass rounded-lg p-4 hover:shadow-lg hover:shadow-[var(--primary)]/10 transition-all duration-300 cursor-default"
                 >
                   <p className="text-sm text-[var(--text-secondary)]">{detail.label}</p>
                   <p className="font-semibold text-[var(--primary)]">{detail.value}</p>

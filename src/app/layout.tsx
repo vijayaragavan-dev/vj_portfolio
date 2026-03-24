@@ -3,10 +3,12 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
-  title: "Vijayaragavan | Java Full Stack Developer",
-  description: "Portfolio of Vijayaragavan - Java Full Stack Developer specializing in Spring Boot, REST APIs, and enterprise applications",
+  title: "Vijayaragavan Portfolio",
+  description: "Java Full Stack Developer",
   icons: {
-    icon: "/favicon.png",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.png",
   },
 };
 
