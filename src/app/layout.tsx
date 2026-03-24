@@ -5,6 +5,9 @@ import SmoothScroll from "@/components/SmoothScroll";
 export const metadata: Metadata = {
   title: "Vijayaragavan | Java Full Stack Developer",
   description: "Portfolio of Vijayaragavan - Java Full Stack Developer specializing in Spring Boot, REST APIs, and enterprise applications",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
