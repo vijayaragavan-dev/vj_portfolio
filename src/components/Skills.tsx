@@ -1,42 +1,41 @@
 "use client";
 
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useRef, useState } from "react";
-import ProgressBar from "@/components/ui/ProgressBar";
 
 const primarySkills = [
-  { name: "Java", percentage: 95 },
-  { name: "Spring Boot", percentage: 90 },
-  { name: "REST API", percentage: 88 },
-  { name: "DSA", percentage: 82 },
-  { name: "MySQL", percentage: 85 },
+  { name: "Java", icon: "☕", description: "Core Java, OOP, Collections" },
+  { name: "Spring Boot", icon: "🌱", description: "REST APIs, Microservices" },
+  { name: "MySQL", icon: "🗄️", description: "Database Design, Queries" },
+  { name: "REST API", icon: "🔗", description: "API Development, Integration" },
+  { name: "DSA", icon: "📊", description: "Algorithms, Problem Solving" },
 ];
 
 const languages = [
-  { name: "C", icon: "C" },
-  { name: "C++", icon: "C++" },
-  { name: "Python", icon: "PY" },
-  { name: "Java", icon: "JV" },
-  { name: "HTML", icon: "HT" },
-  { name: "CSS", icon: "CS" },
-  { name: "JavaScript", icon: "JS" },
-  { name: "Spring Boot", icon: "SB" },
-  { name: "SQL", icon: "SQ" },
+  { name: "Python", icon: "🐍", description: "Python" },
+  { name: "C", icon: "C", description: "C" },
+  { name: "C++", icon: "C++", description: "C++" },
+  { name: "Java", icon: "☕", description: "Java" },
+  { name: "HTML", icon: "🌐", description: "HTML" },
+  { name: "CSS", icon: "🎨", description: "CSS" },
+  { name: "JavaScript", icon: "📜", description: "JavaScript" },
+  { name: "Spring Boot", icon: "🌱", description: "Spring Boot" },
+  { name: "SQL", icon: "🗄️", description: "SQL" },
 ];
 
 const tools = [
-  { name: "VS Code", icon: "VS" },
-  { name: "Docker", icon: "DK" },
-  { name: "Postman", icon: "PM" },
-  { name: "Linux", icon: "LX" },
-  { name: "Maven", icon: "MV" },
-  { name: "IntelliJ", icon: "IJ" },
-  { name: "MySQL Workbench", icon: "MW" },
-  { name: "Eclipse", icon: "EC" },
-  { name: "Anaconda", icon: "AN" },
+  { name: "VS Code", icon: "📝", description: "VS Code" },
+  { name: "Docker", icon: "🐳", description: "Docker" },
+  { name: "Postman", icon: "📮", description: "Postman" },
+  { name: "Linux", icon: "🐧", description: "Linux" },
+  { name: "Maven", icon: "📦", description: "Maven" },
+  { name: "IntelliJ", icon: "💡", description: "IntelliJ" },
+  { name: "MySQL Workbench", icon: "🗃️", description: "MySQL" },
+  { name: "Eclipse", icon: "🌘", description: "Eclipse" },
+  { name: "Anaconda", icon: "🐍", description: "Anaconda" },
 ];
 
-function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: () => void; title: string; items: typeof languages }) {
+function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: () => void; title: string; items: { name: string; icon: string; description: string }[] }) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -80,7 +79,7 @@ function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: ()
                     className="group"
                   >
                     <div className="aspect-square rounded-xl bg-[var(--background-secondary)] border border-[var(--glass-border)] flex flex-col items-center justify-center p-3 hover:border-[var(--primary)] hover:shadow-[0_0_20px_rgba(0,212,255,0.2)] transition-all duration-300 cursor-default">
-                      <span className="text-2xl font-bold text-[var(--primary)] mb-1">{item.icon}</span>
+                      <span className="text-3xl mb-1">{item.icon}</span>
                       <span className="text-xs text-[var(--text-secondary)] text-center">{item.name}</span>
                     </div>
                   </motion.div>
@@ -97,6 +96,7 @@ function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: ()
 export default function Skills() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  useReducedMotion();
   const [showLanguagesModal, setShowLanguagesModal] = useState(false);
   const [showToolsModal, setShowToolsModal] = useState(false);
 
@@ -141,7 +141,7 @@ export default function Skills() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="glass rounded-xl p-6 mb-6">
+            <div className="glass rounded-xl p-6 border border-cyan-500/20">
               <div className="flex items-center gap-3 mb-6">
                 <motion.span 
                   className="text-2xl"
@@ -151,23 +151,27 @@ export default function Skills() {
                   ☕
                 </motion.span>
                 <h3 className="text-xl font-heading font-semibold">Primary Skills</h3>
-                <motion.span
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ delay: 0.5, duration: 0.5 }}
-                  className="ml-auto px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] text-sm font-semibold rounded-full"
-                >
-                  Java 95%
-                </motion.span>
               </div>
-              {primarySkills.map((skill, index) => (
-                <ProgressBar
-                  key={skill.name}
-                  label={skill.name}
-                  percentage={skill.percentage}
-                  color={index === 0 ? "cyan" : "purple"}
-                />
-              ))}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {primarySkills.map((skill, index) => (
+                  <motion.div
+                    key={skill.name}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ delay: 0.2 + index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    className="group relative p-4 rounded-xl bg-[var(--background-secondary)]/50 border border-cyan-500/10 hover:border-cyan-500/40 hover:shadow-[0_0_25px_rgba(0,212,255,0.15)] transition-all duration-300 cursor-default"
+                    style={{ transform: "translateZ(0)" }}
+                  >
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
+                    <div className="relative flex flex-col items-center text-center">
+                      <span className="text-3xl mb-2">{skill.icon}</span>
+                      <span className="font-semibold text-[var(--text-primary)]">{skill.name}</span>
+                      <span className="text-xs text-[var(--text-secondary)] mt-1">{skill.description}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </motion.div>
 

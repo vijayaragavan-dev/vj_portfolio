@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import Card from "@/components/ui/Card";
 
@@ -14,6 +14,7 @@ const details = [
 export default function About() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const prefersReducedMotion = useReducedMotion();
 
   const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -64,31 +65,35 @@ export default function About() {
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2, ease }}
+            className="flex justify-center"
           >
-            <Card className="p-0 overflow-hidden">
-              <div className="aspect-square bg-gradient-to-br from-[var(--primary)]/10 to-[var(--secondary)]/10 flex items-center justify-center relative overflow-hidden">
-                <motion.div
-                  className="absolute inset-0"
-                  animate={{
-                    background: [
-                      "radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.1), transparent 50%)",
-                      "radial-gradient(circle at 70% 70%, rgba(124, 58, 237, 0.1), transparent 50%)",
-                      "radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.1), transparent 50%)",
-                    ],
-                  }}
-                  transition={{ duration: 5, repeat: Infinity }}
-                />
-                <div className="text-center relative z-10">
-                  <div className="w-40 h-40 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] p-1">
-                    <div className="w-full h-full rounded-full bg-[var(--background)] flex items-center justify-center">
-                      <span className="text-5xl font-bold text-[var(--primary)]">VJ</span>
+            <div className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-[var(--primary)] via-[var(--secondary)] to-[var(--primary)] rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm" />
+              <Card className="relative p-0 overflow-hidden bg-[var(--background-secondary)]/80 backdrop-blur-xl border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-500">
+                <div className="aspect-square max-w-sm mx-auto bg-gradient-to-br from-[var(--primary)]/5 to-[var(--secondary)]/5 flex items-center justify-center relative overflow-hidden">
+                  <motion.div
+                    className="absolute inset-0"
+                    animate={{
+                      background: [
+                        "radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.1), transparent 50%)",
+                        "radial-gradient(circle at 70% 70%, rgba(124, 58, 237, 0.1), transparent 50%)",
+                        "radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.1), transparent 50%)",
+                      ],
+                    }}
+                    transition={{ duration: 5, repeat: Infinity }}
+                  />
+                  <div className="text-center relative z-10">
+                    <div className="w-40 h-40 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] p-0.5">
+                      <div className="w-full h-full rounded-full bg-[var(--background)] flex items-center justify-center">
+                        <span className="text-5xl font-bold bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent">VJ</span>
+                      </div>
                     </div>
+                    <h3 className="text-xl font-heading font-semibold text-[var(--text-primary)]">Vijayaragavan</h3>
+                    <p className="text-[var(--text-secondary)]">Java Full Stack Developer</p>
                   </div>
-                  <h3 className="text-xl font-heading font-semibold">Vijayaragavan</h3>
-                  <p className="text-[var(--text-secondary)]">Java Full Stack Developer</p>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           </motion.div>
 
           <motion.div
@@ -98,41 +103,35 @@ export default function About() {
             viewport={{ once: true, margin: "-50px" }}
             className="space-y-6"
           >
-            <motion.p
+            <motion.div
               variants={itemVariants}
-              className="text-lg text-[var(--text-secondary)] leading-relaxed glass rounded-xl p-6"
+              className="glass rounded-xl p-6 border border-cyan-500/20 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(0,212,255,0.1)] transition-all duration-500"
+              style={{ transform: prefersReducedMotion ? "none" : "translateZ(0)", willChange: "transform, opacity" }}
             >
-              <span className="text-[var(--primary)] font-semibold">Passionate Java Full Stack Developer</span> specializing in building 
-              <span className="text-[var(--primary)] font-semibold"> scalable backend systems</span> and 
-              <span className="text-[var(--primary)] font-semibold"> modern web applications</span>. 
-              Strong foundation in <span className="text-[var(--secondary)] font-semibold">Data Structures</span>, 
-              <span className="text-[var(--secondary)] font-semibold"> Algorithms</span>, and 
-              <span className="text-[var(--secondary)] font-semibold"> RESTful API development</span>.
-            </motion.p>
+              <p className="text-lg text-[var(--text-secondary)] leading-relaxed">
+                <span className="text-[var(--primary)] font-semibold">Java Full Stack Developer</span> with strong expertise in backend systems and scalable web applications. Skilled in{" "}
+                <span className="text-[var(--primary)] font-semibold">Java, Spring Boot, and MySQL</span>, with a solid foundation in{" "}
+                <span className="text-[var(--secondary)] font-semibold">Data Structures and Algorithms</span>. Passionate about building efficient, clean, and production-ready applications while continuously learning and improving.
+              </p>
+            </motion.div>
 
-            <motion.p
+            <motion.div
               variants={itemVariants}
-              className="text-lg text-[var(--text-secondary)] leading-relaxed glass rounded-xl p-6"
+              className="grid grid-cols-2 gap-4"
             >
-              Experienced with <span className="text-[var(--primary)] font-semibold">Spring Boot</span>, 
-              <span className="text-[var(--primary)] font-semibold"> MySQL</span>, and 
-              <span className="text-[var(--primary)] font-semibold"> frontend technologies</span>, 
-              with a <span className="text-[var(--secondary)] font-semibold">continuous drive to learn and innovate</span>.
-            </motion.p>
-
-            <div className="grid grid-cols-2 gap-4">
-              {details.map((detail, index) => (
+              {details.map((detail) => (
                 <motion.div
                   key={detail.label}
                   variants={itemVariants}
                   whileHover={{ scale: 1.02, y: -4 }}
-                  className="glass rounded-lg p-4 hover:shadow-lg hover:shadow-[var(--primary)]/10 transition-all duration-300 cursor-default"
+                  className="glass rounded-lg p-4 border border-cyan-500/10 hover:border-cyan-500/30 hover:shadow-[0_0_20px_rgba(0,212,255,0.1)] transition-all duration-300 cursor-default"
+                  style={{ transform: prefersReducedMotion ? "none" : "translateZ(0)" }}
                 >
                   <p className="text-sm text-[var(--text-secondary)]">{detail.label}</p>
                   <p className="font-semibold text-[var(--primary)]">{detail.value}</p>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

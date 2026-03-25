@@ -1,34 +1,111 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import Card from "@/components/ui/Card";
+
+interface LeetCodeStats {
+  totalSolved: number;
+  easySolved: number;
+  mediumSolved: number;
+  hardSolved: number;
+}
+
+interface GitHubStats {
+  public_repos: number;
+  followers: number;
+  following: number;
+}
 
 export default function CodingProfiles() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const prefersReducedMotion = useReducedMotion();
+  
+  const [leetcodeData, setLeetcodeData] = useState<LeetCodeStats | null>(null);
+  const [githubData, setGithubData] = useState<GitHubStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [leetcodeRes, githubRes] = await Promise.all([
+          fetch("https://leetcode-stats-api.herokuapp.com/uvijayaragavan-dev"),
+          fetch("https://api.github.com/users/vijayaragavan-dev"),
+        ]);
+
+        if (leetcodeRes.ok) {
+          const leetcodeJson = await leetcodeRes.json();
+          setLeetcodeData({
+            totalSolved: leetcodeJson.totalSolved || 0,
+            easySolved: leetcodeJson.easySolved || 0,
+            mediumSolved: leetcodeJson.mediumSolved || 0,
+            hardSolved: leetcodeJson.hardSolved || 0,
+          });
+        }
+
+        if (githubRes.ok) {
+          const githubJson = await githubRes.json();
+          setGithubData({
+            public_repos: githubJson.public_repos || 0,
+            followers: githubJson.followers || 0,
+            following: githubJson.following || 0,
+          });
+        }
+      } catch {
+        setError("Failed to load data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const profiles = [
     {
       platform: "LeetCode",
       icon: "🏆",
       color: "bg-yellow-500/20",
-      problems: "150+",
+      stats: leetcodeData ? `${leetcodeData.totalSolved}+` : loading ? "..." : "-",
+      subStats: leetcodeData 
+        ? `Easy: ${leetcodeData.easySolved} | Medium: ${leetcodeData.mediumSolved} | Hard: ${leetcodeData.hardSolved}`
+        : "Problems Solved",
       label: "Problems Solved",
-      subLabel: "Active on LeetCode",
-      href: "https://leetcode.com/u/uvijayaragavan-dev",
+      href: "https://leetcode.com/u/uvijayaragavan-dev/",
     },
     {
       platform: "GitHub",
-      icon: "",
+      icon: "💻",
       color: "bg-gray-800",
       iconPath: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z",
-      problems: "500+",
-      label: "Contributions",
-      subLabel: "Total contributions",
+      stats: githubData ? `${githubData.public_repos}` : loading ? "..." : "-",
+      subStats: githubData 
+        ? `Followers: ${githubData.followers} | Following: ${githubData.following}`
+        : "Public Repos",
+      label: "Public Repositories",
       href: "https://github.com/vijayaragavan-dev",
     },
   ];
+
+  if (error && !leetcodeData && !githubData) {
+    return (
+      <section id="coding" className="py-20 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold font-heading mb-4">
+              Coding <span className="text-[var(--primary)]">Profiles</span>
+            </h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] mx-auto rounded-full" />
+          </div>
+          <div className="glass rounded-xl p-8 text-center max-w-md mx-auto">
+            <p className="text-[var(--text-secondary)]">Unable to load profile data. Please try again later.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="coding" className="py-20 relative">
@@ -56,20 +133,20 @@ export default function CodingProfiles() {
           {profiles.map((profile, index) => (
             <motion.div
               key={profile.platform}
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 30, scale: 0.95 }}
               animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{ 
-                duration: 0.8, 
+                duration: prefersReducedMotion ? 0 : 0.8, 
                 delay: index * 0.15, 
                 ease: [0.22, 1, 0.36, 1] 
               }}
             >
-              <a href={profile.href} target="_blank" rel="noopener noreferrer">
-                <Card glow={index === 0} className="cursor-pointer">
+              <a href={profile.href} target="_blank" rel="noopener noreferrer" className="block">
+                <Card glow={index === 0} className="cursor-pointer border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-500">
                   <div className="flex items-center gap-4 mb-4">
                     <motion.div
                       className={`w-12 h-12 rounded-lg ${profile.color} flex items-center justify-center`}
-                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      whileHover={prefersReducedMotion ? {} : { scale: 1.1, rotate: 5 }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       {profile.icon ? (
@@ -87,13 +164,13 @@ export default function CodingProfiles() {
                   </div>
                   <motion.div
                     className="text-4xl font-bold text-[var(--primary)] mb-2"
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ delay: 0.5 + index * 0.1 }}
                   >
-                    {profile.problems}
+                    {profile.stats}
                   </motion.div>
-                  <p className="text-sm text-[var(--text-secondary)]">{profile.subLabel}</p>
+                  <p className="text-sm text-[var(--text-secondary)]">{profile.subStats}</p>
                 </Card>
               </a>
             </motion.div>

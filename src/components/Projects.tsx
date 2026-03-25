@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef, useState } from "react";
 
 const projects = [
@@ -45,9 +45,10 @@ interface ProjectCardProps {
   project: typeof projects[0];
   index: number;
   isInView: boolean;
+  prefersReducedMotion: boolean;
 }
 
-function ProjectCard({ project, index, isInView }: ProjectCardProps) {
+function ProjectCard({ project, index, isInView, prefersReducedMotion }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -63,23 +64,25 @@ function ProjectCard({ project, index, isInView }: ProjectCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.95 }}
+      initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 50, scale: 0.95 }}
       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ 
-        duration: 0.8, 
+        duration: prefersReducedMotion ? 0 : 0.8, 
         delay: index * 0.15, 
         ease: [0.22, 1, 0.36, 1] 
       }}
+      className="w-[320px] sm:w-[380px] flex-shrink-0 snap-center"
     >
       <motion.div
-        onMouseEnter={() => setIsHovered(true)}
+        onMouseEnter={() => !prefersReducedMotion && setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onMouseMove={handleMouseMove}
+        onMouseMove={!prefersReducedMotion ? handleMouseMove : undefined}
         style={{
           transformStyle: "preserve-3d",
-          transform: isHovered 
+          transform: !prefersReducedMotion && isHovered 
             ? `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`
             : "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
+          willChange: "transform",
         }}
         className="group relative h-full"
       >
@@ -175,9 +178,11 @@ function ProjectCard({ project, index, isInView }: ProjectCardProps) {
 export default function Projects() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const reducedMotion = useReducedMotion();
+  const prefersReducedMotion = reducedMotion ?? false;
 
   return (
-    <section id="projects" className="py-20 relative">
+    <section id="projects" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-0 w-96 h-96 bg-[var(--primary)]/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-[var(--secondary)]/5 rounded-full blur-3xl" />
@@ -206,13 +211,25 @@ export default function Projects() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.title}
-              project={project}
-              index={index}
-              isInView={isInView}
+        <div className="overflow-x-auto pb-8 -mx-4 px-4 scrollbar-hide snap-x snap-mandatory">
+          <div className="flex gap-6" style={{ width: 'max-content' }}>
+            {projects.map((project, index) => (
+              <ProjectCard
+                key={project.title}
+                project={project}
+                index={index}
+                isInView={isInView}
+                prefersReducedMotion={prefersReducedMotion}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-center gap-2 mt-4">
+          {projects.map((_, index) => (
+            <div
+              key={index}
+              className="w-2 h-2 rounded-full bg-[var(--primary)]/30"
             />
           ))}
         </div>
