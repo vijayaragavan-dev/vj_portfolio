@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Card from "@/components/ui/Card";
 
@@ -14,7 +14,6 @@ const details = [
 export default function About() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const prefersReducedMotion = useReducedMotion();
 
   const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -105,8 +104,7 @@ export default function About() {
           >
             <motion.div
               variants={itemVariants}
-              className="glass rounded-xl p-6 border border-cyan-500/20 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(0,212,255,0.1)] transition-all duration-500"
-              style={{ transform: prefersReducedMotion ? "none" : "translateZ(0)", willChange: "transform, opacity" }}
+              className="glass rounded-xl p-6 border border-cyan-500/20 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(0,212,255,0.1)] transition-all duration-500 gpu-accelerated"
             >
               <p className="text-lg text-[var(--text-secondary)] leading-relaxed">
                 <span className="text-[var(--primary)] font-semibold">Java Full Stack Developer</span> with strong expertise in backend systems and scalable web applications. Skilled in{" "}
@@ -124,8 +122,7 @@ export default function About() {
                   key={detail.label}
                   variants={itemVariants}
                   whileHover={{ scale: 1.02, y: -4 }}
-                  className="glass rounded-lg p-4 border border-cyan-500/10 hover:border-cyan-500/30 hover:shadow-[0_0_20px_rgba(0,212,255,0.1)] transition-all duration-300 cursor-default"
-                  style={{ transform: prefersReducedMotion ? "none" : "translateZ(0)" }}
+                  className="glass rounded-lg p-4 border border-cyan-500/10 hover:border-cyan-500/30 hover:shadow-[0_0_20px_rgba(0,212,255,0.1)] transition-all duration-300 cursor-default gpu-accelerated"
                 >
                   <p className="text-sm text-[var(--text-secondary)]">{detail.label}</p>
                   <p className="font-semibold text-[var(--primary)]">{detail.value}</p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 
 const primarySkills = [
@@ -96,7 +96,6 @@ function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: ()
 export default function Skills() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  useReducedMotion();
   const [showLanguagesModal, setShowLanguagesModal] = useState(false);
   const [showToolsModal, setShowToolsModal] = useState(false);
 

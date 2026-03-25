@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 
 const projects = [
@@ -45,10 +45,9 @@ interface ProjectCardProps {
   project: typeof projects[0];
   index: number;
   isInView: boolean;
-  prefersReducedMotion: boolean;
 }
 
-function ProjectCard({ project, index, isInView, prefersReducedMotion }: ProjectCardProps) {
+function ProjectCard({ project, index, isInView }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -64,22 +63,23 @@ function ProjectCard({ project, index, isInView, prefersReducedMotion }: Project
 
   return (
     <motion.div
-      initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 50, scale: 0.95 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      initial={{ opacity: 0, y: 50, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true }}
       transition={{ 
-        duration: prefersReducedMotion ? 0 : 0.8, 
+        duration: 0.8, 
         delay: index * 0.15, 
         ease: [0.22, 1, 0.36, 1] 
       }}
       className="w-[320px] sm:w-[380px] flex-shrink-0 snap-center"
     >
       <motion.div
-        onMouseEnter={() => !prefersReducedMotion && setIsHovered(true)}
+        onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onMouseMove={!prefersReducedMotion ? handleMouseMove : undefined}
+        onMouseMove={handleMouseMove}
         style={{
           transformStyle: "preserve-3d",
-          transform: !prefersReducedMotion && isHovered 
+          transform: isHovered 
             ? `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`
             : "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
           willChange: "transform",
@@ -178,8 +178,6 @@ function ProjectCard({ project, index, isInView, prefersReducedMotion }: Project
 export default function Projects() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const reducedMotion = useReducedMotion();
-  const prefersReducedMotion = reducedMotion ?? false;
 
   return (
     <section id="projects" className="py-20 relative overflow-hidden">
@@ -192,7 +190,8 @@ export default function Projects() {
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-16"
         >
@@ -202,7 +201,8 @@ export default function Projects() {
           <motion.div
             className="w-20 h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] mx-auto rounded-full"
             initial={{ scaleX: 0 }}
-            animate={isInView ? { scaleX: 1 } : {}}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             style={{ originX: 0 }}
           />
@@ -219,7 +219,6 @@ export default function Projects() {
                 project={project}
                 index={index}
                 isInView={isInView}
-                prefersReducedMotion={prefersReducedMotion}
               />
             ))}
           </div>

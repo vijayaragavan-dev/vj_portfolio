@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import Card from "@/components/ui/Card";
 
@@ -20,7 +20,6 @@ interface GitHubStats {
 export default function CodingProfiles() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const prefersReducedMotion = useReducedMotion();
   
   const [leetcodeData, setLeetcodeData] = useState<LeetCodeStats | null>(null);
   const [githubData, setGithubData] = useState<GitHubStats | null>(null);
@@ -133,10 +132,11 @@ export default function CodingProfiles() {
           {profiles.map((profile, index) => (
             <motion.div
               key={profile.platform}
-              initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 30, scale: 0.95 }}
-              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
               transition={{ 
-                duration: prefersReducedMotion ? 0 : 0.8, 
+                duration: 0.8, 
                 delay: index * 0.15, 
                 ease: [0.22, 1, 0.36, 1] 
               }}
@@ -146,7 +146,7 @@ export default function CodingProfiles() {
                   <div className="flex items-center gap-4 mb-4">
                     <motion.div
                       className={`w-12 h-12 rounded-lg ${profile.color} flex items-center justify-center`}
-                      whileHover={prefersReducedMotion ? {} : { scale: 1.1, rotate: 5 }}
+                      whileHover={{ scale: 1.1, rotate: 5 }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       {profile.icon ? (
@@ -164,8 +164,9 @@ export default function CodingProfiles() {
                   </div>
                   <motion.div
                     className="text-4xl font-bold text-[var(--primary)] mb-2"
-                    initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.5 + index * 0.1 }}
                   >
                     {profile.stats}
