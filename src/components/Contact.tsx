@@ -6,7 +6,7 @@ import Button from "@/components/ui/Button";
 
 const contactInfo = [
   { icon: "📧", label: "Email", value: "uvijayaragavan03@gmail.com", href: "mailto:uvijayaragavan03@gmail.com" },
-  { icon: "📱", label: "Phone", value: "+91 9876543210" },
+  { icon: "📱", label: "Phone", value: "+91 8667834495" },
   { icon: "📍", label: "Location", value: "Tamil Nadu, India" },
 ];
 
