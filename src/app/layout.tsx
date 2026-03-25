@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   title: "Vijayaragavan Portfolio",
   description: "Java Full Stack Developer",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.png",
+    icon: "/favicon.ico?v=2",
+    shortcut: "/favicon.ico?v=2",
+    apple: "/favicon.png?v=2",
   },
 };
 
