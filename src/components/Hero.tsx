@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Button from "@/components/ui/Button";
-import FlipCard from "@/components/FlipCard";
 
 const roles = ["Java Full Stack Developer", "Spring Boot Expert", "Backend Developer"];
 
@@ -11,6 +10,7 @@ export default function Hero() {
   const [currentRole, setCurrentRole] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 100]);
@@ -214,7 +214,43 @@ export default function Hero() {
               transition={{ duration: 3, repeat: Infinity }}
             >
               <div className="w-full h-full rounded-full bg-[var(--background)] flex items-center justify-center overflow-hidden">
-                <FlipCard size={280} />
+                <div
+                  className="flip-container profile-glow"
+                  onMouseEnter={() => setHovered(true)}
+                  onMouseLeave={() => setHovered(false)}
+                  aria-label="Profile — hover to see logo"
+                >
+                  <div className={`flip-inner ${hovered ? "hovered" : ""}`}>
+
+                    {/* Front face — full profile photo */}
+                    <div className="flip-front">
+                      <img
+                        src="/profile.jpeg"
+                        alt="Vijayaragavan"
+                        draggable={false}
+                      />
+                    </div>
+
+                    {/* Back face — VJ initials */}
+                    <div className="flip-back">
+                      <span
+                        style={{
+                          fontSize: "4rem",
+                          fontWeight: 800,
+                          background: "linear-gradient(135deg, #00e5ff 0%, #7b61ff 100%)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          letterSpacing: "-0.03em",
+                          userSelect: "none",
+                          lineHeight: 1,
+                        }}
+                      >
+                        VJ
+                      </span>
+                    </div>
+
+                  </div>
+                </div>
               </div>
             </motion.div>
 

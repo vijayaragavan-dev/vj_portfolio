@@ -641,3 +641,75 @@ html {
     width: 380px;
   }
 }
+
+/* Flip container for profile image flip */
+.flip-container {
+  width: 220px;
+  height: 220px;
+  perspective: 1000px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+}
+
+.flip-inner.hovered {
+  transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* Front face — profile photo fills the entire circle */
+.flip-front {
+  background: #000;
+}
+
+.flip-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  border-radius: 50%;
+}
+
+/* Back face — VJ logo */
+.flip-back {
+  transform: rotateY(180deg);
+  background: radial-gradient(circle at 40% 40%, #0d2137, #050d1a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Glow ring around the circle */
+.profile-glow {
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3px rgba(0, 229, 255, 0.5),
+    0 0 30px rgba(0, 229, 255, 0.25),
+    0 0 60px rgba(0, 229, 255, 0.10);
+  transition: box-shadow 0.4s ease;
+}
+
+.profile-glow:hover {
+  box-shadow:
+    0 0 0 3px rgba(0, 229, 255, 0.9),
+    0 0 40px rgba(0, 229, 255, 0.50),
+    0 0 80px rgba(0, 229, 255, 0.20);
+}

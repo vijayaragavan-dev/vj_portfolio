@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 interface FlipCardProps {
   size?: number;
 }
 
 export default function FlipCard({ size = 280 }: FlipCardProps) {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -20,32 +20,23 @@ export default function FlipCard({ size = 280 }: FlipCardProps) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const handleFlip = () => {
-    if (isMobile) {
-      setIsFlipped((prev) => !prev);
-    }
+  const handleToggle = () => {
+    setShowLogo((prev) => !prev);
   };
 
   return (
-    <div
+    <motion.div
       className="flip-card"
-      style={{ width: size, height: size }}
-      onClick={handleFlip}
-      onMouseEnter={() => !isMobile && setIsHovering(true)}
-      onMouseLeave={() => !isMobile && setIsHovering(false)}
+      style={{ width: size, height: size, transformStyle: "preserve-3d" }}
+      onClick={handleToggle}
+      onMouseEnter={() => !isMobile && setShowLogo(true)}
+      onMouseLeave={() => !isMobile && setShowLogo(false)}
+      initial={{ rotateY: 0 }}
+      animate={{ rotateY: showLogo ? 180 : 0 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div
-        className={`flip-inner ${isFlipped || isHovering ? "flipped" : ""}`}
-      >
+      <div style={{ position: "absolute", width: "100%", height: "100%", backfaceVisibility: "hidden" }}>
         <div className="flip-front">
-          <div className="flip-content">
-            <span className="flip-letter">VJ</span>
-          </div>
-          {isMobile && (
-            <span className="flip-hint">Tap to flip</span>
-          )}
-        </div>
-        <div className="flip-back">
           <img
             src="/profile.jpeg"
             alt="Vijayaragavan"
@@ -53,6 +44,13 @@ export default function FlipCard({ size = 280 }: FlipCardProps) {
           />
         </div>
       </div>
-    </div>
+      <div style={{ position: "absolute", width: "100%", height: "100%", backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
+        <div className="flip-back">
+          <div className="flip-content">
+            <span className="flip-letter">VJ</span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }

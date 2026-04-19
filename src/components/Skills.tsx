@@ -2,40 +2,95 @@
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
+import { FaJava, FaPython, FaHtml5, FaCss3Alt, FaJs, FaDocker, FaLinux } from "react-icons/fa";
+import { SiSpringboot, SiMysql, SiPostman, SiIntellijidea, SiAnaconda, SiC, SiEclipseide } from "react-icons/si";
 
 const primarySkills = [
-  { name: "Java", icon: "☕", description: "Core Java, OOP, Collections" },
-  { name: "Spring Boot", icon: "🌱", description: "REST APIs, Microservices" },
-  { name: "MySQL", icon: "🗄️", description: "Database Design, Queries" },
-  { name: "REST API", icon: "🔗", description: "API Development, Integration" },
-  { name: "DSA", icon: "📊", description: "Algorithms, Problem Solving" },
+  { name: "Java",        icon: <FaJava />,        color: "#f89820" },
+  { name: "Spring Boot", icon: <SiSpringboot />,   color: "#6db33f" },
+  { name: "MySQL",       icon: <SiMysql />,        color: "#4479a1" },
+  { name: "REST API",    icon: <FaJs />,           color: "#f0db4f" },
+  { name: "DSA",         icon: <FaJava />,         color: "#f89820" },
 ];
 
 const languages = [
-  { name: "Python", icon: "🐍", description: "Python" },
-  { name: "C", icon: "C", description: "C" },
-  { name: "C++", icon: "C++", description: "C++" },
-  { name: "Java", icon: "☕", description: "Java" },
-  { name: "HTML", icon: "🌐", description: "HTML" },
-  { name: "CSS", icon: "🎨", description: "CSS" },
-  { name: "JavaScript", icon: "📜", description: "JavaScript" },
-  { name: "Spring Boot", icon: "🌱", description: "Spring Boot" },
-  { name: "SQL", icon: "🗄️", description: "SQL" },
+  { name: "Java",        icon: <FaJava />,         color: "#f89820" },
+  { name: "Python",      icon: <FaPython />,       color: "#3572A5" },
+  { name: "C",           icon: <SiC />,            color: "#a8b9cc" },
+  { name: "C++",         icon: <SiC />,    color: "#00599c" },
+  { name: "HTML",        icon: <FaHtml5 />,        color: "#e34f26" },
+  { name: "CSS",         icon: <FaCss3Alt />,      color: "#264de4" },
+  { name: "JavaScript",  icon: <FaJs />,           color: "#f0db4f" },
+  { name: "Spring Boot", icon: <SiSpringboot />,   color: "#6db33f" },
+  { name: "SQL",         icon: <SiMysql />,        color: "#4479a1" },
 ];
 
 const tools = [
-  { name: "VS Code", icon: "📝", description: "VS Code" },
-  { name: "Docker", icon: "🐳", description: "Docker" },
-  { name: "Postman", icon: "📮", description: "Postman" },
-  { name: "Linux", icon: "🐧", description: "Linux" },
-  { name: "Maven", icon: "📦", description: "Maven" },
-  { name: "IntelliJ", icon: "💡", description: "IntelliJ" },
-  { name: "MySQL Workbench", icon: "🗃️", description: "MySQL" },
-  { name: "Eclipse", icon: "🌘", description: "Eclipse" },
-  { name: "Anaconda", icon: "🐍", description: "Anaconda" },
+  { name: "VS Code",          icon: <SiIntellijidea />,    color: "#007acc" },
+  { name: "Docker",           icon: <FaDocker />,           color: "#2496ed" },
+  { name: "Postman",          icon: <SiPostman />,          color: "#ff6c37" },
+  { name: "Linux",            icon: <FaLinux />,            color: "#fcc624" },
+  { name: "Maven",            icon: <FaDocker />,          color: "#c71a36" },
+  { name: "IntelliJ",         icon: <SiIntellijidea />,     color: "#fe315d" },
+  { name: "MySQL Workbench",  icon: <SiMysql />,            color: "#4479a1" },
+  { name: "Eclipse",          icon: <SiEclipseide />,         color: "#2c2255" },
+  { name: "Anaconda",         icon: <SiAnaconda />,         color: "#44a833" },
 ];
 
-function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: () => void; title: string; items: { name: string; icon: string; description: string }[] }) {
+interface SkillItem {
+  name: string;
+  icon: React.ReactNode;
+  color: string;
+}
+
+const SkillCard = ({ name, icon, color }: SkillItem) => (
+  <div
+    className="skill-card"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "10px",
+      padding: "0.55rem 0.9rem",
+      border: "1px solid rgba(255,255,255,0.08)",
+      borderRadius: "8px",
+      transition: "transform 0.2s ease, box-shadow 0.2s ease",
+      cursor: "default",
+    }}
+    onMouseEnter={e => {
+      e.currentTarget.style.transform = "translateY(-3px)";
+      e.currentTarget.style.boxShadow = `0 0 14px ${color}55`;
+    }}
+    onMouseLeave={e => {
+      e.currentTarget.style.transform = "translateY(0)";
+      e.currentTarget.style.boxShadow = "none";
+    }}
+  >
+    <span style={{ fontSize: "1.35rem", color, lineHeight: 1, flexShrink: 0 }}>
+      {icon}
+    </span>
+    <span style={{ fontSize: "0.85rem", fontWeight: 500, whiteSpace: "nowrap" }}>
+      {name}
+    </span>
+  </div>
+);
+
+interface SkillGroupProps {
+  title: string;
+  items: SkillItem[];
+}
+
+const SkillGroup = ({ title, items }: SkillGroupProps) => (
+  <div style={{ marginBottom: "1.5rem" }}>
+    <h4 style={{ marginBottom: "0.75rem", color: "#00e5ff", fontSize: "0.9rem" }}>
+      {title}
+    </h4>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+      {items.map(s => <SkillCard key={s.name} {...s} />)}
+    </div>
+  </div>
+);
+
+function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: () => void; title: string; items: { name: string; icon: React.ReactNode; color: string }[] }) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -79,7 +134,7 @@ function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: ()
                     className="group"
                   >
                     <div className="aspect-square rounded-xl bg-[var(--background-secondary)] border border-[var(--glass-border)] flex flex-col items-center justify-center p-3 hover:border-[var(--primary)] hover:shadow-[0_0_20px_rgba(0,212,255,0.2)] transition-all duration-300 cursor-default">
-                      <span className="text-3xl mb-1">{item.icon}</span>
+                      <span className="text-3xl mb-1" style={{ color: item.color }}>{item.icon}</span>
                       <span className="text-xs text-[var(--text-secondary)] text-center">{item.name}</span>
                     </div>
                   </motion.div>
@@ -147,30 +202,11 @@ export default function Skills() {
                   animate={{ rotate: [0, 10, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  ☕
+                  <FaJava />
                 </motion.span>
                 <h3 className="text-xl font-heading font-semibold">Primary Skills</h3>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {primarySkills.map((skill, index) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: 0.2 + index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className="group relative p-4 rounded-xl bg-[var(--background-secondary)]/50 border border-cyan-500/10 hover:border-cyan-500/40 hover:shadow-[0_0_25px_rgba(0,212,255,0.15)] transition-all duration-300 cursor-default"
-                    style={{ transform: "translateZ(0)" }}
-                  >
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
-                    <div className="relative flex flex-col items-center text-center">
-                      <span className="text-3xl mb-2">{skill.icon}</span>
-                      <span className="font-semibold text-[var(--text-primary)]">{skill.name}</span>
-                      <span className="text-xs text-[var(--text-secondary)] mt-1">{skill.description}</span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              <SkillGroup title="Primary Skills" items={primarySkills} />
             </div>
           </motion.div>
 
@@ -189,7 +225,7 @@ export default function Skills() {
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  🔧
+                  <FaPython />
                 </motion.span>
                 <h3 className="text-xl font-heading font-semibold group-hover:text-[var(--primary)] transition-colors">Languages</h3>
                 <motion.span
@@ -198,28 +234,7 @@ export default function Skills() {
                   Click to view
                 </motion.span>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {languages.slice(0, 6).map((skill, index) => (
-                  <motion.span
-                    key={skill.name}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: 0.4 + index * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    whileHover={{ scale: 1.1, y: -3, boxShadow: "0 0 20px rgba(0,212,255,0.3)" }}
-                    className="px-4 py-2 bg-[var(--background-secondary)] border border-[var(--glass-border)] rounded-lg text-sm cursor-default hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all duration-300"
-                  >
-                    {skill.name}
-                  </motion.span>
-                ))}
-                <motion.span
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ delay: 0.7, duration: 0.5 }}
-                  className="px-4 py-2 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg text-sm text-[var(--primary)]"
-                >
-                  +{languages.length - 6} more
-                </motion.span>
-              </div>
+              <SkillGroup title="Languages" items={languages} />
             </motion.div>
 
             <motion.div
@@ -236,7 +251,7 @@ export default function Skills() {
                   animate={{ rotate: [0, -10, 0] }}
                   transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
                 >
-                  🛠️
+                  <FaDocker />
                 </motion.span>
                 <h3 className="text-xl font-heading font-semibold group-hover:text-[var(--secondary)] transition-colors">Tools & Technologies</h3>
                 <motion.span
@@ -245,28 +260,7 @@ export default function Skills() {
                   Click to view
                 </motion.span>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {tools.slice(0, 6).map((tool, index) => (
-                  <motion.span
-                    key={tool.name}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: 0.5 + index * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    whileHover={{ scale: 1.1, y: -3, boxShadow: "0 0 20px rgba(124,58,237,0.3)" }}
-                    className="px-4 py-2 bg-[var(--background-secondary)] border border-[var(--glass-border)] rounded-lg text-sm cursor-default hover:border-[var(--secondary)] hover:text-[var(--secondary)] transition-all duration-300"
-                  >
-                    {tool.name}
-                  </motion.span>
-                ))}
-                <motion.span
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ delay: 0.8, duration: 0.5 }}
-                  className="px-4 py-2 bg-[var(--secondary)]/10 border border-[var(--secondary)]/30 rounded-lg text-sm text-[var(--secondary)]"
-                >
-                  +{tools.length - 6} more
-                </motion.span>
-              </div>
+              <SkillGroup title="Tools & Technologies" items={tools} />
             </motion.div>
           </div>
         </div>
