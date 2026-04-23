@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import WelcomeIntro from "@/components/WelcomeIntro";
 
 export const metadata: Metadata = {
   title: "Vijayaragavan Portfolio",
@@ -20,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--text-primary)]">
+        <WelcomeIntro />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
