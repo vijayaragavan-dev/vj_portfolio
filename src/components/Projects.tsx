@@ -36,7 +36,7 @@ const projects = [
     title: "Website Scam Detector",
     description: "AI-powered web application that analyzes URLs to detect potential scams, phishing attempts, and malicious websites.",
     tech: ["Machine Learning", "Flask", "Python", "HTML/CSS"],
-    github: "https://github.com/vijayaragavan-dev/website_scam_detector",
+    github: "https://github.com/vijayaragavan-dev/WebSite-fraud-detector.git",
     gradient: "from-violet-500/20 via-purple-500/20 to-fuchsia-500/20",
   },
 ];
