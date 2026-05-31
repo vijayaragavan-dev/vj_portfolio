@@ -144,7 +144,8 @@ export default function Hero() {
                         fill
                         sizes="220px"
                         draggable={false}
-                        className="object-cover object-center-top"
+                        className="object-cover"
+                        style={{ objectPosition: "center top" }}
                       />
                     </div>
                   </div>
