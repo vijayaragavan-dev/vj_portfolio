@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavbar();
     initMobileMenu();
     initBackToTop();
-    initFormValidation();
     initTiltEffect();
     initScrollProgress();
     initMagneticButtons();
@@ -174,150 +173,7 @@ function initBackToTop() {
     });
 }
 
-function initFormValidation() {
-    const form = document.getElementById('contact-form');
-    
-    if (!form) return;
 
-    const fields = {
-        name: {
-            element: document.getElementById('name'),
-            errorElement: document.getElementById('name-error'),
-            validate: (value) => {
-                if (!value.trim()) return 'Name is required';
-                if (value.trim().length < 2) return 'Name must be at least 2 characters';
-                if (!/^[a-zA-Z\s]+$/.test(value.trim())) return 'Name can only contain letters and spaces';
-                return '';
-            }
-        },
-        email: {
-            element: document.getElementById('email'),
-            errorElement: document.getElementById('email-error'),
-            validate: (value) => {
-                if (!value.trim()) return 'Email is required';
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(value.trim())) return 'Please enter a valid email address';
-                return '';
-            }
-        },
-        subject: {
-            element: document.getElementById('subject'),
-            errorElement: document.getElementById('subject-error'),
-            validate: (value) => {
-                if (!value.trim()) return 'Subject is required';
-                if (value.trim().length < 3) return 'Subject must be at least 3 characters';
-                return '';
-            }
-        },
-        message: {
-            element: document.getElementById('message'),
-            errorElement: document.getElementById('message-error'),
-            validate: (value) => {
-                if (!value.trim()) return 'Message is required';
-                if (value.trim().length < 10) return 'Message must be at least 10 characters';
-                return '';
-            }
-        }
-    };
-
-    Object.keys(fields).forEach(key => {
-        const field = fields[key];
-        
-        field.element.addEventListener('blur', () => validateField(key));
-        field.element.addEventListener('input', () => {
-            if (field.errorElement.textContent) validateField(key);
-        });
-    });
-
-    function validateField(fieldName) {
-        const field = fields[fieldName];
-        const error = field.validate(field.element.value);
-        
-        field.errorElement.textContent = error;
-        field.element.style.borderColor = error ? 'var(--accent)' : 'var(--glass-border)';
-        return !error;
-    }
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        let isValid = true;
-        Object.keys(fields).forEach(key => {
-            if (!validateField(key)) isValid = false;
-        });
-
-        if (isValid) {
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<span class="btn-text">Sending...</span><span class="btn-icon">⏳</span>';
-            submitBtn.disabled = true;
-
-            setTimeout(() => {
-                form.reset();
-                submitBtn.innerHTML = '<span class="btn-text">Message Sent!</span><span class="btn-icon">✅</span>';
-                
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }, 3000);
-
-                showNotification('success', 'Message sent successfully!');
-            }, 1500);
-        } else {
-            showNotification('error', 'Please fix the errors in the form');
-        }
-    });
-}
-
-function showNotification(type, message) {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.innerHTML = `
-        <span class="notification-icon">${type === 'success' ? '✅' : '❌'}</span>
-        <span class="notification-message">${message}</span>
-    `;
-    
-    const style = document.createElement('style');
-    style.textContent = `
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            z-index: 10000;
-            animation: slideIn 0.3s ease-out;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        .notification-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
-        .notification-error { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(100px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideOut {
-            from { opacity: 1; transform: translateX(0); }
-            to { opacity: 0; transform: translateX(100px); }
-        }
-    `;
-    
-    document.head.appendChild(style);
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease-out forwards';
-        setTimeout(() => {
-            notification.remove();
-            style.remove();
-        }, 300);
-    }, 3000);
-}
 
 function initTiltEffect() {
     const cards = document.querySelectorAll('[data-tilt]');
@@ -330,8 +186,7 @@ function initTiltEffect() {
     });
 
     function handleTilt(e) {
-        const card = this;
-        const rect = card.getBoundingClientRect();
+        const rect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         const centerX = rect.width / 2;
@@ -437,22 +292,4 @@ function initSectionSnap() {
     });
 }
 
-window.addEventListener('load', () => {
-    const resumeLinks = document.querySelectorAll('a[href$=".pdf"]');
-    resumeLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-            if (href === 'assets/Vijayaragavan_Resume.pdf') {
-                fetch(href, { method: 'HEAD' })
-                    .then(response => {
-                        if (!response.ok) {
-                            console.warn('Resume file not found. Please add the resume PDF to the assets folder.');
-                        }
-                    })
-                    .catch(err => {
-                        console.warn('Resume file not found. Please add the resume PDF to the assets folder.');
-                    });
-            }
-        });
-    });
-});
+

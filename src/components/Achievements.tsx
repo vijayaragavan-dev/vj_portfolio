@@ -8,7 +8,7 @@ const stats = [
   { value: 10, suffix: "+", label: "Projects" },
   { value: 150, suffix: "+", label: "Problems Solved" },
   { value: 15, suffix: "+", label: "Technologies" },
-  { value: 95, suffix: "%", label: "Java Focus" },
+  { value: 5, suffix: "+", label: "Certifications" },
 ];
 
 function AnimatedCounter({ value, suffix, isInView }: { value: number; suffix: string; isInView: boolean }) {

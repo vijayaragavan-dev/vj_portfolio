@@ -6,21 +6,21 @@ import { useRef, useState } from "react";
 const projects = [
   {
     title: "Simple Ecommerce Website",
-    description: "A full-featured e-commerce platform with product catalog, shopping cart, user authentication, and payment integration.",
+    description: "An e-commerce platform with product catalog, shopping cart, and user authentication features.",
     tech: ["React", "Spring Boot", "MySQL", "REST API"],
     github: "https://github.com/vijayaragavan-dev/Ecommerce",
     gradient: "from-rose-500/20 via-pink-500/20 to-purple-500/20",
   },
   {
     title: "User Management System",
-    description: "Comprehensive user management with CRUD operations, role-based access control, and secure authentication.",
+    description: "User management system with CRUD operations, role-based access control, and authentication features.",
     tech: ["Spring Security", "JWT", "PostgreSQL", "React"],
     github: "https://github.com/vijayaragavan-dev/User-Management-System",
     gradient: "from-cyan-500/20 via-blue-500/20 to-indigo-500/20",
   },
   {
     title: "Authentication System",
-    description: "Secure authentication system with login, registration, password reset, and multi-factor authentication support.",
+    description: "Authentication system with login, registration, and password reset functionality using JWT.",
     tech: ["Spring Boot", "OAuth 2.0", "JWT", "React"],
     github: "https://github.com/vijayaragavan-dev/Authentication_System",
     gradient: "from-emerald-500/20 via-teal-500/20 to-cyan-500/20",
@@ -34,7 +34,7 @@ const projects = [
   },
   {
     title: "Website Scam Detector",
-    description: "AI-powered web application that analyzes URLs to detect potential scams, phishing attempts, and malicious websites.",
+    description: "Web application that analyzes URLs to detect potential scams and phishing attempts using machine learning.",
     tech: ["Machine Learning", "Flask", "Python", "HTML/CSS"],
     github: "https://github.com/vijayaragavan-dev/WebSite-fraud-detector.git",
     gradient: "from-violet-500/20 via-purple-500/20 to-fuchsia-500/20",
@@ -207,7 +207,7 @@ export default function Projects() {
             style={{ originX: 0 }}
           />
           <p className="text-[var(--text-secondary)] mt-4 max-w-2xl mx-auto">
-            Showcasing innovative solutions and technical excellence
+            Projects I have built while learning and exploring new technologies
           </p>
         </motion.div>
 

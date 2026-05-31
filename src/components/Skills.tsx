@@ -2,40 +2,8 @@
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { FaJava, FaPython, FaHtml5, FaCss3Alt, FaJs, FaDocker, FaLinux } from "react-icons/fa";
-import { SiSpringboot, SiMysql, SiPostman, SiIntellijidea, SiAnaconda, SiC, SiEclipseide } from "react-icons/si";
-
-const primarySkills = [
-  { name: "Java",        icon: <FaJava />,        color: "#f89820" },
-  { name: "Spring Boot", icon: <SiSpringboot />,   color: "#6db33f" },
-  { name: "MySQL",       icon: <SiMysql />,        color: "#4479a1" },
-  { name: "REST API",    icon: <FaJs />,           color: "#f0db4f" },
-  { name: "DSA",         icon: <FaJava />,         color: "#f89820" },
-];
-
-const languages = [
-  { name: "Java",        icon: <FaJava />,         color: "#f89820" },
-  { name: "Python",      icon: <FaPython />,       color: "#3572A5" },
-  { name: "C",           icon: <SiC />,            color: "#a8b9cc" },
-  { name: "C++",         icon: <SiC />,    color: "#00599c" },
-  { name: "HTML",        icon: <FaHtml5 />,        color: "#e34f26" },
-  { name: "CSS",         icon: <FaCss3Alt />,      color: "#264de4" },
-  { name: "JavaScript",  icon: <FaJs />,           color: "#f0db4f" },
-  { name: "Spring Boot", icon: <SiSpringboot />,   color: "#6db33f" },
-  { name: "SQL",         icon: <SiMysql />,        color: "#4479a1" },
-];
-
-const tools = [
-  { name: "VS Code",          icon: <SiIntellijidea />,    color: "#007acc" },
-  { name: "Docker",           icon: <FaDocker />,           color: "#2496ed" },
-  { name: "Postman",          icon: <SiPostman />,          color: "#ff6c37" },
-  { name: "Linux",            icon: <FaLinux />,            color: "#fcc624" },
-  { name: "Maven",            icon: <FaDocker />,          color: "#c71a36" },
-  { name: "IntelliJ",         icon: <SiIntellijidea />,     color: "#fe315d" },
-  { name: "MySQL Workbench",  icon: <SiMysql />,            color: "#4479a1" },
-  { name: "Eclipse",          icon: <SiEclipseide />,         color: "#2c2255" },
-  { name: "Anaconda",         icon: <SiAnaconda />,         color: "#44a833" },
-];
+import { FaJava, FaPython, FaJs, FaHtml5, FaCss3Alt, FaDatabase, FaCode, FaCube, FaServer } from "react-icons/fa";
+import { SiC, SiCplusplus, SiSpringboot, SiMysql, SiNumpy, SiPandas, SiScikitlearn } from "react-icons/si";
 
 interface SkillItem {
   name: string;
@@ -43,54 +11,93 @@ interface SkillItem {
   color: string;
 }
 
-const SkillCard = ({ name, icon, color }: SkillItem) => (
-  <div
-    className="skill-card"
-    style={{
-      display: "flex",
-      alignItems: "center",
-      gap: "10px",
-      padding: "0.55rem 0.9rem",
-      border: "1px solid rgba(255,255,255,0.08)",
-      borderRadius: "8px",
-      transition: "transform 0.2s ease, box-shadow 0.2s ease",
-      cursor: "default",
-    }}
-    onMouseEnter={e => {
-      e.currentTarget.style.transform = "translateY(-3px)";
-      e.currentTarget.style.boxShadow = `0 0 14px ${color}55`;
-    }}
-    onMouseLeave={e => {
-      e.currentTarget.style.transform = "translateY(0)";
-      e.currentTarget.style.boxShadow = "none";
-    }}
-  >
-    <span style={{ fontSize: "1.35rem", color, lineHeight: 1, flexShrink: 0 }}>
-      {icon}
-    </span>
-    <span style={{ fontSize: "0.85rem", fontWeight: 500, whiteSpace: "nowrap" }}>
-      {name}
-    </span>
-  </div>
-);
-
-interface SkillGroupProps {
+interface SkillCategory {
   title: string;
-  items: SkillItem[];
+  icon: React.ReactNode;
+  color: string;
+  skills: SkillItem[];
 }
 
-const SkillGroup = ({ title, items }: SkillGroupProps) => (
-  <div style={{ marginBottom: "1.5rem" }}>
-    <h4 style={{ marginBottom: "0.75rem", color: "#00e5ff", fontSize: "0.9rem" }}>
-      {title}
-    </h4>
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-      {items.map(s => <SkillCard key={s.name} {...s} />)}
-    </div>
-  </div>
-);
+const skillCategories: SkillCategory[] = [
+  {
+    title: "Programming",
+    icon: <FaJava />,
+    color: "#f89820",
+    skills: [
+      { name: "Java", icon: <FaJava />, color: "#f89820" },
+      { name: "Python", icon: <FaPython />, color: "#3572A5" },
+      { name: "JavaScript", icon: <FaJs />, color: "#f0db4f" },
+      { name: "C", icon: <SiC />, color: "#a8b9cc" },
+      { name: "C++", icon: <SiCplusplus />, color: "#00599c" },
+    ],
+  },
+  {
+    title: "Frontend",
+    icon: <FaHtml5 />,
+    color: "#e34f26",
+    skills: [
+      { name: "HTML", icon: <FaHtml5 />, color: "#e34f26" },
+      { name: "CSS", icon: <FaCss3Alt />, color: "#264de4" },
+      { name: "JavaScript", icon: <FaJs />, color: "#f0db4f" },
+    ],
+  },
+  {
+    title: "Backend",
+    icon: <SiSpringboot />,
+    color: "#6db33f",
+    skills: [
+      { name: "Spring Boot (Learning)", icon: <SiSpringboot />, color: "#6db33f" },
+      { name: "REST APIs", icon: <FaServer />, color: "#00d4ff" },
+      { name: "Client-Server Architecture", icon: <FaServer />, color: "#7c3aed" },
+    ],
+  },
+  {
+    title: "Database",
+    icon: <SiMysql />,
+    color: "#4479a1",
+    skills: [
+      { name: "MySQL", icon: <SiMysql />, color: "#4479a1" },
+      { name: "Database Fundamentals", icon: <FaDatabase />, color: "#10b981" },
+    ],
+  },
+  {
+    title: "CS Fundamentals",
+    icon: <FaCode />,
+    color: "#f89820",
+    skills: [
+      { name: "Data Structures", icon: <FaCode />, color: "#f89820" },
+      { name: "Algorithms", icon: <FaCube />, color: "#7c3aed" },
+      { name: "OOP", icon: <FaCube />, color: "#00d4ff" },
+      { name: "DBMS", icon: <FaDatabase />, color: "#10b981" },
+    ],
+  },
+  {
+    title: "AI/ML",
+    icon: <SiScikitlearn />,
+    color: "#f7931e",
+    skills: [
+      { name: "NumPy (Learning)", icon: <SiNumpy />, color: "#013243" },
+      { name: "Pandas (Learning)", icon: <SiPandas />, color: "#150458" },
+      { name: "Scikit-Learn (Learning)", icon: <SiScikitlearn />, color: "#f7931e" },
+      { name: "ML Fundamentals", icon: <FaDatabase />, color: "#00d4ff" },
+    ],
+  },
+];
 
-function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: () => void; title: string; items: { name: string; icon: React.ReactNode; color: string }[] }) {
+function SkillChip({ name, icon, color }: SkillItem) {
+  return (
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--glass-border)] bg-[var(--background-secondary)]/50 hover:bg-[var(--background-secondary)] hover:border-[var(--primary)]/40 hover:shadow-[0_0_12px_rgba(0,212,255,0.15)] transition-all duration-300 cursor-default">
+      <span style={{ fontSize: "1.1rem", color, lineHeight: 1, flexShrink: 0 }}>
+        {icon}
+      </span>
+      <span className="text-sm font-medium text-[var(--text-secondary)] whitespace-nowrap">
+        {name}
+      </span>
+    </div>
+  );
+}
+
+function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: () => void; title: string; items: SkillItem[] }) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -108,7 +115,7 @@ function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: ()
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-2xl"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-lg"
           >
             <div className="glass rounded-2xl p-8 mx-4 border border-[var(--glass-border)]">
               <div className="flex items-center justify-between mb-6">
@@ -124,18 +131,17 @@ function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: ()
                   </svg>
                 </motion.button>
               </div>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {items.map((item, index) => (
                   <motion.div
                     key={item.name}
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.05, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="group"
                   >
-                    <div className="aspect-square rounded-xl bg-[var(--background-secondary)] border border-[var(--glass-border)] flex flex-col items-center justify-center p-3 hover:border-[var(--primary)] hover:shadow-[0_0_20px_rgba(0,212,255,0.2)] transition-all duration-300 cursor-default">
-                      <span className="text-3xl mb-1" style={{ color: item.color }}>{item.icon}</span>
-                      <span className="text-xs text-[var(--text-secondary)] text-center">{item.name}</span>
+                    <div className="aspect-square rounded-xl bg-[var(--background-secondary)] border border-[var(--glass-border)] flex flex-col items-center justify-center p-4 hover:border-[var(--primary)] hover:shadow-[0_0_20px_rgba(0,212,255,0.2)] transition-all duration-300 cursor-default">
+                      <span className="text-4xl mb-2" style={{ color: item.color }}>{item.icon}</span>
+                      <span className="text-sm text-[var(--text-secondary)] text-center leading-tight">{item.name}</span>
                     </div>
                   </motion.div>
                 ))}
@@ -151,30 +157,30 @@ function Modal({ isOpen, onClose, title, items }: { isOpen: boolean; onClose: ()
 export default function Skills() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [showLanguagesModal, setShowLanguagesModal] = useState(false);
-  const [showToolsModal, setShowToolsModal] = useState(false);
+  const [modalCategory, setModalCategory] = useState<SkillCategory | null>(null);
+
+  const ease = [0.22, 1, 0.36, 1] as const;
 
   return (
     <section id="skills" className="py-20 relative">
-      <Modal
-        isOpen={showLanguagesModal}
-        onClose={() => setShowLanguagesModal(false)}
-        title="Languages & Technologies"
-        items={languages}
-      />
-      <Modal
-        isOpen={showToolsModal}
-        onClose={() => setShowToolsModal(false)}
-        title="Tools & Technologies"
-        items={tools}
-      />
+      <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)] via-[var(--background-secondary)]/20 to-[var(--background)]" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {skillCategories.map((cat) => (
+        <Modal
+          key={cat.title}
+          isOpen={modalCategory?.title === cat.title}
+          onClose={() => setModalCategory(null)}
+          title={cat.title}
+          items={cat.skills}
+        />
+      ))}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease }}
           className="text-center mb-16"
         >
           <h2 className="text-4xl font-bold font-heading mb-4">
@@ -184,85 +190,47 @@ export default function Skills() {
             className="w-20 h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] mx-auto rounded-full"
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, delay: 0.3, ease }}
             style={{ originX: 0 }}
           />
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="glass rounded-xl p-6 border border-cyan-500/20">
-              <div className="flex items-center gap-3 mb-6">
-                <motion.span 
-                  className="text-2xl"
-                  animate={{ rotate: [0, 10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <FaJava />
-                </motion.span>
-                <h3 className="text-xl font-heading font-semibold">Primary Skills</h3>
-              </div>
-              <SkillGroup title="Primary Skills" items={primarySkills} />
-            </div>
-          </motion.div>
-
-          <div className="space-y-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {skillCategories.map((category, index) => (
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="glass rounded-xl p-6 cursor-pointer group"
-              onClick={() => setShowLanguagesModal(true)}
-              whileHover={{ scale: 1.02, y: -4 }}
+              key={category.title}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: index * 0.1, ease }}
+              whileHover={{ y: -6, scale: 1.02 }}
+              onClick={() => setModalCategory(category)}
+              className="glass rounded-xl p-6 border border-[var(--glass-border)] hover:border-[var(--primary)]/40 hover:shadow-[0_0_30px_rgba(0,212,255,0.1)] transition-all duration-300 cursor-pointer group flex flex-col"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <motion.span 
+              <div className="flex items-center gap-3 mb-5">
+                <motion.div
                   className="text-2xl"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  style={{ color: category.color }}
+                  whileHover={{ rotate: [0, -10, 10, 0] }}
+                  transition={{ duration: 0.4 }}
                 >
-                  <FaPython />
-                </motion.span>
-                <h3 className="text-xl font-heading font-semibold group-hover:text-[var(--primary)] transition-colors">Languages</h3>
+                  {category.icon}
+                </motion.div>
+                <h3 className="text-lg font-heading font-semibold group-hover:text-[var(--primary)] transition-colors">
+                  {category.title}
+                </h3>
                 <motion.span
-                  className="ml-auto text-[var(--text-secondary)] text-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="ml-auto text-[var(--text-secondary)] text-xs opacity-0 group-hover:opacity-100 transition-opacity"
                 >
-                  Click to view
+                  View
                 </motion.span>
               </div>
-              <SkillGroup title="Languages" items={languages} />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="glass rounded-xl p-6 cursor-pointer group"
-              onClick={() => setShowToolsModal(true)}
-              whileHover={{ scale: 1.02, y: -4 }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <motion.span 
-                  className="text-2xl"
-                  animate={{ rotate: [0, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                >
-                  <FaDocker />
-                </motion.span>
-                <h3 className="text-xl font-heading font-semibold group-hover:text-[var(--secondary)] transition-colors">Tools & Technologies</h3>
-                <motion.span
-                  className="ml-auto text-[var(--text-secondary)] text-sm opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  Click to view
-                </motion.span>
+              <div className="flex flex-wrap gap-2 flex-1 content-start">
+                {category.skills.map((skill) => (
+                  <SkillChip key={skill.name} {...skill} />
+                ))}
               </div>
-              <SkillGroup title="Tools & Technologies" items={tools} />
             </motion.div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,14 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import Card from "@/components/ui/Card";
+import { FaGraduationCap, FaMapMarkerAlt, FaCode, FaBookOpen } from "react-icons/fa";
 
-const details = [
-  { label: "Focus", value: "Java Backend Development" },
-  { label: "Education", value: "B.E. Computer Science" },
-  { label: "Location", value: "Tamil Nadu, India" },
-  { label: "Goal", value: "Building scalable systems" },
+const infoCards = [
+  { icon: <FaGraduationCap />, label: "Education", value: "B.E. Computer Science", color: "from-cyan-500/20 to-blue-500/20", iconColor: "text-cyan-400" },
+  { icon: <FaMapMarkerAlt />, label: "Location", value: "Tamil Nadu, India", color: "from-purple-500/20 to-pink-500/20", iconColor: "text-purple-400" },
+  { icon: <FaCode />, label: "Current Focus", value: "Backend Development & AI/ML", color: "from-emerald-500/20 to-teal-500/20", iconColor: "text-emerald-400" },
+  { icon: <FaBookOpen />, label: "Learning", value: "Spring Boot, DSA, Machine Learning", color: "from-amber-500/20 to-orange-500/20", iconColor: "text-amber-400" },
 ];
 
 export default function About() {
@@ -17,28 +18,10 @@ export default function About() {
 
   const ease = [0.22, 1, 0.36, 1] as const;
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 40, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { duration: 0.8, ease },
-    },
-  };
-
   return (
     <section id="about" className="py-20 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)] via-[var(--background-secondary)]/20 to-[var(--background)]" />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           ref={ref}
@@ -59,16 +42,16 @@ export default function About() {
           />
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-5 gap-8 items-start">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2, ease }}
-            className="flex justify-center"
+            className="lg:col-span-2 flex justify-center"
           >
             <div className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-[var(--primary)] via-[var(--secondary)] to-[var(--primary)] rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm" />
-              <Card className="relative p-0 overflow-hidden bg-[var(--background-secondary)]/80 backdrop-blur-xl border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-500">
+              <div className="relative p-0 overflow-hidden bg-[var(--background-secondary)]/80 backdrop-blur-xl border border-cyan-500/20 hover:border-cyan-500/40 rounded-2xl transition-all duration-500">
                 <div className="aspect-square max-w-sm mx-auto bg-gradient-to-br from-[var(--primary)]/5 to-[var(--secondary)]/5 flex items-center justify-center relative overflow-hidden">
                   <motion.div
                     className="absolute inset-0"
@@ -81,54 +64,67 @@ export default function About() {
                     }}
                     transition={{ duration: 5, repeat: Infinity }}
                   />
-                  <div className="text-center relative z-10">
+                  <div className="text-center relative z-10 p-8">
                     <div className="w-40 h-40 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] p-0.5">
-                      <div className="w-full h-full rounded-full bg-[var(--background)] flex items-center justify-center">
-                        <span className="text-5xl font-bold bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent">VJ</span>
+                      <div className="w-full h-full rounded-full bg-[var(--background)] flex items-center justify-center overflow-hidden relative">
+                        <Image
+                          src="/profile.jpeg"
+                          alt="Vijayaragavan"
+                          fill
+                          sizes="160px"
+                          className="object-cover rounded-full"
+                          style={{ objectPosition: "center top" }}
+                        />
                       </div>
                     </div>
                     <h3 className="text-xl font-heading font-semibold text-[var(--text-primary)]">Vijayaragavan</h3>
-                    <p className="text-[var(--text-secondary)]">Java Full Stack Developer</p>
+                    <p className="text-[var(--text-secondary)] text-sm">Computer Science Student</p>
                   </div>
                 </div>
-              </Card>
+              </div>
             </div>
           </motion.div>
 
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            className="space-y-6"
+            className="lg:col-span-3 space-y-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.4, ease }}
           >
-            <motion.div
-              variants={itemVariants}
-              className="glass rounded-xl p-6 border border-cyan-500/20 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(0,212,255,0.1)] transition-all duration-500 gpu-accelerated"
-            >
-              <p className="text-lg text-[var(--text-secondary)] leading-relaxed">
-                <span className="text-[var(--primary)] font-semibold">Java Full Stack Developer</span> with strong expertise in backend systems and scalable web applications. Skilled in{" "}
-                <span className="text-[var(--primary)] font-semibold">Java, Spring Boot, and MySQL</span>, with a solid foundation in{" "}
-                <span className="text-[var(--secondary)] font-semibold">Data Structures and Algorithms</span>. Passionate about building efficient, clean, and production-ready applications while continuously learning and improving.
+            <div className="glass rounded-xl p-6 border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-500">
+              <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed">
+                Hello! I&apos;m Vijayaragavan, a Computer Science student with a strong interest in software development,
+                backend engineering, and artificial intelligence.
               </p>
-            </motion.div>
+              <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed mt-4">
+                I have experience working with Java, HTML, CSS, JavaScript, and Python, and I am currently expanding
+                my knowledge in Spring Boot, Data Structures and Algorithms, and Machine Learning.
+              </p>
+              <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed mt-4">
+                I enjoy understanding how software systems work behind the scenes, including APIs, databases,
+                client-server communication, and application architecture.
+              </p>
+              <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed mt-4">
+                My goal is to continuously learn, build meaningful projects, and grow into a skilled software engineer.
+              </p>
+            </div>
 
-            <motion.div
-              variants={itemVariants}
-              className="grid grid-cols-2 gap-4"
-            >
-              {details.map((detail) => (
+            <div className="grid sm:grid-cols-2 gap-4">
+              {infoCards.map((card, index) => (
                 <motion.div
-                  key={detail.label}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.02, y: -4 }}
-                  className="glass rounded-lg p-4 border border-cyan-500/10 hover:border-cyan-500/30 hover:shadow-[0_0_20px_rgba(0,212,255,0.1)] transition-all duration-300 cursor-default gpu-accelerated"
+                  key={card.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.5 + index * 0.1, ease }}
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  className={`glass rounded-xl p-5 border border-[var(--glass-border)] hover:border-[var(--primary)]/40 transition-all duration-300 bg-gradient-to-br ${card.color}`}
                 >
-                  <p className="text-sm text-[var(--text-secondary)]">{detail.label}</p>
-                  <p className="font-semibold text-[var(--primary)]">{detail.value}</p>
+                  <div className={`text-2xl mb-3 ${card.iconColor}`}>{card.icon}</div>
+                  <p className="text-xs text-[var(--text-secondary)] uppercase tracking-wider mb-1">{card.label}</p>
+                  <p className="font-semibold text-[var(--text-primary)]">{card.value}</p>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>

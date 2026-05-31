@@ -42,4 +42,6 @@ next-env.d.ts
 
 # project specific
 SPEC.md
+
+# Windows artifacts
 nul

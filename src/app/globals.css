@@ -1,5 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --color-background: #0a0a0f;
+  --color-background-secondary: #12121a;
+  --color-primary: #00d4ff;
+  --color-secondary: #7c3aed;
+  --color-accent: #10b981;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #94a3b8;
+  --color-glass: rgba(255, 255, 255, 0.05);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --font-sans: var(--font-dm-sans);
+  --font-heading: var(--font-sora);
+  --font-mono: var(--font-jetbrains-mono);
+}
 
 :root {
   --background: #0a0a0f;
@@ -18,40 +32,21 @@
   --duration-slow: 0.8s;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-background-secondary: var(--background-secondary);
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-glass: var(--glass);
-  --color-glass-border: var(--glass-border);
-  --font-sans: 'DM Sans', sans-serif;
-  --font-heading: 'Sora', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-}
-
 * {
   box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: auto;
 }
 
 body {
   background: var(--background);
   color: var(--text-primary);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-sora), 'Sora', sans-serif;
 }
 
 ::selection {
@@ -142,188 +137,6 @@ h1, h2, h3, h4, h5, h6 {
 .flip-card {
   perspective: 1000px;
   cursor: pointer;
-}
-
-.flip-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  transform-style: preserve-3d;
-}
-
-.flip-inner.flipped {
-  transform: rotateY(180deg);
-}
-
-.flip-front,
-.flip-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.flip-front {
-  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
-}
-
-.flip-content {
-  width: 85%;
-  height: 85%;
-  border-radius: 50%;
-  background: var(--background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.flip-content::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(124, 58, 237, 0.2));
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.flip-card:hover .flip-content::before {
-  opacity: 1;
-}
-
-.flip-letter {
-  font-size: 3.5rem;
-  font-weight: 700;
-  font-family: 'Sora', sans-serif;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  position: relative;
-  z-index: 1;
-}
-
-.flip-hint {
-  position: absolute;
-  bottom: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  opacity: 0.6;
-  white-space: nowrap;
-}
-
-.flip-back {
-  transform: rotateY(180deg);
-  background: transparent;
-  overflow: hidden;
-  border-radius: 50%;
-  position: relative;
-}
-
-.flip-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 30%;
-  border-radius: 50%;
-  filter: saturate(1.1) contrast(1.05);
-  transition: filter 0.4s ease, transform 0.4s ease;
-}
-
-.flip-card:hover .flip-image {
-  filter: saturate(1.2) contrast(1.1);
-}
-
-/* Glow pulse effect on flip */
-@keyframes flip-glow-pulse {
-  0%, 100% {
-    box-shadow: 
-      0 0 30px rgba(0, 212, 255, 0.4),
-      0 0 60px rgba(124, 58, 237, 0.3);
-  }
-  50% {
-    box-shadow: 
-      0 0 50px rgba(0, 212, 255, 0.6),
-      0 0 80px rgba(124, 58, 237, 0.5);
-  }
-}
-
-.flip-card:hover .flip-back {
-  animation: flip-glow-pulse 2s ease-in-out infinite;
-}
-
-/* Subtle floating animation for the whole component */
-@keyframes card-float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-.flip-card {
-  animation: card-float 4s ease-in-out infinite;
-}
-
-.flip-card:hover {
-  animation-play-state: paused;
-}
-
-/* Scale effect on hover */
-.flip-card:hover .flip-inner {
-  transform: scale(1.03);
-}
-
-.flip-card:hover .flip-inner.flipped {
-  transform: rotateY(180deg) scale(1.03);
-}
-
-/* Depth shadow when flipped */
-.flip-back::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.3);
-  pointer-events: none;
-}
-
-/* Blur-to-clear effect during flip */
-.flip-front,
-.flip-back {
-  transition: filter 0.4s ease;
-}
-
-.flip-card:hover .flip-front,
-.flip-card:hover .flip-back {
-  filter: blur(0);
-}
-
-/* Mobile touch feedback */
-@media (max-width: 768px) {
-  .flip-hint {
-    opacity: 0.8;
-    font-size: 0.7rem;
-  }
-  
-  .flip-letter {
-    font-size: 3rem;
-  }
 }
 
 /* Animated Gradient Background */
@@ -479,12 +292,6 @@ h1, h2, h3, h4, h5, h6 {
 .section-reveal-delay-2 { transition-delay: 0.2s; }
 .section-reveal-delay-3 { transition-delay: 0.3s; }
 .section-reveal-delay-4 { transition-delay: 0.4s; }
-
-/* Smooth Scroll Enhancement */
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px;
-}
 
 /* Cursor Glow Effect */
 .cursor-glow {
@@ -677,6 +484,10 @@ html {
 /* Front face — profile photo fills the entire circle */
 .flip-front {
   background: #000;
+}
+
+.flip-front {
+  position: relative;
 }
 
 .flip-front img {

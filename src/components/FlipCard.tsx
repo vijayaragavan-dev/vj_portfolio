@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
@@ -37,9 +38,11 @@ export default function FlipCard({ size = 280 }: FlipCardProps) {
     >
       <div style={{ position: "absolute", width: "100%", height: "100%", backfaceVisibility: "hidden" }}>
         <div className="flip-front">
-          <img
+          <Image
             src="/profile.jpeg"
             alt="Vijayaragavan"
+            fill
+            sizes="280px"
             className="flip-image"
           />
         </div>
