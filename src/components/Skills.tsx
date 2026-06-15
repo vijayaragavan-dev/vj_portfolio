@@ -2,8 +2,8 @@
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { FaJava, FaPython, FaJs, FaHtml5, FaCss3Alt, FaDatabase, FaCode, FaCube, FaServer } from "react-icons/fa";
-import { SiC, SiCplusplus, SiSpringboot, SiMysql, SiNumpy, SiPandas, SiScikitlearn } from "react-icons/si";
+import { FaJava, FaPython, FaJs, FaHtml5, FaCss3Alt, FaDatabase, FaCode, FaCube, FaServer, FaBrain, FaNetworkWired, FaGlobe, FaChartBar, FaDesktop, FaRobot, FaPencilAlt, FaLightbulb, FaSearch } from "react-icons/fa";
+import { SiC, SiCplusplus, SiSpringboot, SiMysql, SiNumpy, SiPandas, SiScikitlearn, SiPostgresql, SiMongodb } from "react-icons/si";
 
 interface SkillItem {
   name: string;
@@ -57,6 +57,9 @@ const skillCategories: SkillCategory[] = [
     color: "#4479a1",
     skills: [
       { name: "MySQL", icon: <SiMysql />, color: "#4479a1" },
+      { name: "Oracle SQL", icon: <FaDatabase />, color: "#f80000" },
+      { name: "PostgreSQL", icon: <SiPostgresql />, color: "#336791" },
+      { name: "MongoDB", icon: <SiMongodb />, color: "#47A248" },
       { name: "Database Fundamentals", icon: <FaDatabase />, color: "#10b981" },
     ],
   },
@@ -69,6 +72,11 @@ const skillCategories: SkillCategory[] = [
       { name: "Algorithms", icon: <FaCube />, color: "#7c3aed" },
       { name: "OOP", icon: <FaCube />, color: "#00d4ff" },
       { name: "DBMS", icon: <FaDatabase />, color: "#10b981" },
+      { name: "AI / Machine Learning", icon: <FaBrain />, color: "#00d4ff" },
+      { name: "Computer Networks", icon: <FaNetworkWired />, color: "#7c3aed" },
+      { name: "Web Technologies", icon: <FaGlobe />, color: "#10b981" },
+      { name: "Data Science", icon: <FaChartBar />, color: "#f89820" },
+      { name: "Operating Systems", icon: <FaDesktop />, color: "#4479a1" },
     ],
   },
   {
@@ -80,6 +88,21 @@ const skillCategories: SkillCategory[] = [
       { name: "Pandas (Learning)", icon: <SiPandas />, color: "#150458" },
       { name: "Scikit-Learn (Learning)", icon: <SiScikitlearn />, color: "#f7931e" },
       { name: "ML Fundamentals", icon: <FaDatabase />, color: "#00d4ff" },
+    ],
+  },
+  {
+    title: "Generative AI & Agentic AI",
+    icon: <FaBrain />,
+    color: "#00d4ff",
+    skills: [
+      { name: "Generative AI Fundamentals", icon: <FaBrain />, color: "#00d4ff" },
+      { name: "Agentic AI Fundamentals", icon: <FaRobot />, color: "#7c3aed" },
+      { name: "Prompt Engineering", icon: <FaPencilAlt />, color: "#10b981" },
+      { name: "LLM Fundamentals", icon: <FaLightbulb />, color: "#f89820" },
+      { name: "RAG Basics", icon: <FaSearch />, color: "#00d4ff" },
+      { name: "LangChain Basics", icon: <FaCode />, color: "#7c3aed" },
+      { name: "AI Agents", icon: <FaRobot />, color: "#10b981" },
+      { name: "Vector Databases", icon: <FaDatabase />, color: "#f89820" },
     ],
   },
 ];
